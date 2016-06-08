@@ -1,0 +1,90 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>2014东南大学最具影响力毕业生管理员</title>
+</head>
+<script type="text/javascript" src="login_js.js"></script>
+<script type="text/javascript" src="jquery-1.7.2.min.js"></script>
+<link rel="stylesheet" href="buttons.css">
+
+<style type="text/css">
+body{
+	width:100%;
+	height:100%;
+	background: #e0e0e0;
+}
+#titleStyle{
+	position: relative;
+	font-family: "黑体","微软雅黑","华文新魏";
+	font-size: 40px;
+	color: #459f9e;
+	text-align:center;
+}
+#A_bigBlock{
+	/*overflow: hidden;*/
+	background: #459f9e;
+	width:360px;
+	height:440px;
+	position: relative;
+	left: 50%;
+	margin-left: -180px;
+}
+.A_input{
+	font-family: "微软雅黑",Arial, sans-serif;
+    font-size:18px;
+    font-weight:500;
+	color:#0066FF;
+    width: 280px;
+	height:40px;
+  	padding: 5px 10px 5px 10px;
+    border: none;
+	text-align:left;
+	background: #e8e8e8;
+}
+#A_btnLogin
+{
+	position: relative;
+	left: 50%;
+	margin-left: -150px;
+	top: 200px;
+	font-family: "微软雅黑";
+	color: #e8e8e8;
+	font-size: 20px;
+	width: 300px;
+	height: 50px;
+	border-radius: 0px;
+	border: none;
+	background: #4fbcc5;
+	-moz-box-shadow: 0px 5px 5px #b73f3e;
+	box-shadow: 0px 3px 3px #3a8889;
+}
+#A_btnLogin:hover{
+	background: #68d1da;
+}
+#A_logintxt{
+	position: relative;
+	top:15px;
+	font-family: Arial, Times, serif;
+	color: #e8e8e8;
+	font-size:30px;
+	margin-left: 135px;
+}
+</style>
+
+<body>
+	<h1 id='titleStyle'>最具影响力的毕业生</h1>
+	<h2 id='titleStyle'style="font-size:30px;">管理员登陆系统</h2>
+	<div id="A_bigBlock">
+		<h id='A_logintxt' style="left:-50px;">ADMIN LOGIN</h><br/>
+		<form action="" method="post">
+			<input type="text" id="adminId" class='A_input' placeholder="请输入管理员用户名" style="position:relative;top:80px;left:30px;"/><br/>
+
+			<input type="password" id="adminPassword" class='A_input' placeholder="请输入管理员密码" style="position:relative;top:100px;left:30px;"/><br/>
+			
+			<input type="button" src="" id='A_btnLogin' value="登  录" name="login" onclick="_adminLogin();"><br/>
+		</form>	
+	</div>
+	<p style='text-align:center;position:relative;top:8px;'>copyright@东南大学计算机学院、软件学院I++俱乐部</p>
+</body>
+</html>

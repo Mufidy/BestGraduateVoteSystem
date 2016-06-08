@@ -1,0 +1,109 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>2014东南大学最具影响力毕业生</title>
+</head>
+<link rel="stylesheet" href="buttons.css">
+<script type="text/javascript" src="login_js.js"></script>
+<script type="text/javascript" src="jquery-1.7.2.min.js"></script>
+<link rel="stylesheet" type="text/css" href="login.css" />
+
+<script type="text/javascript">
+function checkBrowser(){
+    var userAgent=navigator.userAgent.toLowerCase(), s, o = {};  
+    var browser={
+        version:(userAgent.match(/(?:firefox|opera|safari|chrome|msie)[\/: ]([\d.]+)/))[1],
+        safari:/version.+safari/.test(userAgent),
+        chrome:/chrome/.test(userAgent),
+        firefox:/firefox/.test(userAgent),
+        ie:/msie/.test(userAgent),
+        opera: /opera/.test(userAgent )
+    } /* 获得浏览器的名称及版本信息 */
+    if (browser.ie && browser.version >= 6)
+    {
+      /* 判断是否为IE 6以上版本，是则执行以下操作 */
+      alert("请使用非IE浏览器!（例如Chrome浏览器）");
+      window.open("","_self");
+      this.window.opener=null;
+      window.close();
+  }
+}
+</script>
+
+<body onload="checkBrowser();">
+<div id='titleBlock'>
+	<img src="seu.jpg" style="height:170px;width:170px;position:relative;left:20%;" />
+	<h1 id='titleStyle'><scan style="color:#459f86">2014东南大学</scan><scan style="color:#c64444">最具影响力毕业生</scan></h1>
+</div>
+<div id='bigBlock'>
+	<div id='leftBlock'>
+		<h id='noticetxt'>NOTICE</h><br/>
+		<div style="position:relative;width:237px;left:10px;">
+			<h id='explaintxt'><br/>
+				　● 若使用IE浏览器，请使用IE9以上版本，推荐使用Chrome浏览器<br/>
+				　● 首次登录需要点击注册按<br/>钮进行注册<br/>
+				　● 登录名和密码可以是数字<br/>或字母，不能包含标点符号或特殊字符<br/>
+				　● 注意确保验证码大小写正确，点击验证码图片可更新验证码<br/>
+				　● 个人信息保存后，可在截<br/>止日期之前重新登录进行修改<br/>
+				　● 如有疑问，请发送邮件至seugraduate2014@163.com<br/>
+			</h>
+		</div>
+	</div>
+	<div id='inner'>
+	<div id='innerBlock'>
+		<h id='logintxt'>LOGIN</h><br/>
+		<form action=".asp" method="get">
+		<div id='form'>
+				<input type='text' class='input' placeholder="登录名" name="loginName" id="loginName"/>
+				<br/>
+				<input type='password' class='input' placeholder="密码" name="pwd" id="pwd"/>
+				<br/>
+				<input type="text" class="input" id="valiInput" placeholder="验证码"/>
+				<img src="getValidate.php" id='validatePic' onclick="this.src=this.src"/>
+		</div>
+		<br/><br/><br/><br/>
+			<input onclick="admin();" type="button" value="我是管理员" id="btnAdmin"/>
+			<input class='btnLogin' type="button" value="登  录" onclick="_canLogin()"/><br/>
+			<input class='btnRegister' id='slip' type="button" value="注  册"/>
+		</form>
+	</div>
+
+	<div id='regBlock'>
+		<h id='logintxt' style="left:-20px;">REGISTER</h><br/>
+		<form action=".asp" method="get">
+		<div id='form'>
+				<input type='text' class='input' placeholder="请输入用户名(6-12位数字或字母)" name="inputLogName" id="nameRegister" style="position: relative;left: 50%;margin-left: -150px;"/>
+				<br/>
+				<input type='password' class='input' id='pwd1' placeholder="请输入密码" name="pwd" id="pwd" style="position: relative;top: 20px;left: 50%;margin-left: -150px;"/>
+				<br/>
+				<input type="password" class="input" id="pwd2" style="position: relative;top: 40px;left: 50%;margin-left: -150px;" placeholder="再次输入密码"/>
+		</div>
+		<br/><br/><br/><br/>
+			<!--方便起见没改class-->
+			<input class='btnLogin' type="button" value="注  册" onclick="_canRegister()"/><br/>
+			<input class='btnRegister' id='returnLog' type="button" value="返回登录"/>
+		</form>
+	</div>
+	</div>
+</div>
+<br/>
+<br/>
+<br/>
+<hr>
+    <div style="font-family:'黑体';font-size:15px;color:gray;text-align: center;">东南大学学生处 | 东南大学教育基金会 | 能源与环境学院 | 计算机科学与工程学院、软件学院</div>
+    <div style="font-family:'黑体';font-size:14px;color:gray;text-align: center;">Copyright @ 软件学院 I++ Club</div>
+</body>
+<script type="text/javascript">
+	$("#slip").click(function(){
+		$("#regBlock").stop().animate({left:"0px"});
+		$("#innerBlock").stop().animate({left:"-360px"});
+	});
+
+
+	$("#returnLog").click(function(){
+		$("#innerBlock").stop().animate({left:"0px"});
+		$("#regBlock").stop().animate({left:"360px"});
+	});
+</script>
+</html>

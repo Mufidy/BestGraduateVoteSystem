@@ -1,0 +1,1101 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>管理员界面</title>
+	<link rel="stylesheet" href="buttons.css">
+</head>
+
+<script type="text/javascript" src="json.js"></script>
+<script type="text/javascript" src="jquery-1.7.2.min.js"></script>
+<script language="javascript" type="text/javascript">
+function   chkmaxsms(vobj1,vmax)   {   
+	var   str=vobj1.value;   
+    var   strlen=str.length;   
+    if(strlen>vmax)   {   
+        alert('字数超过限制');   
+        eval(vobj1.value=str.substr(0,vmax));   
+    }   
+}
+function checkMaxInput1(obj,maxLen,remLen) {
+	if (obj.value.length > maxLen){	//如果输入的字数超过了限制
+		obj.value = obj.value.substring(0, maxLen);	//就去掉多余的字
+		remLen.innerText = '您输入的内容超出了字数限制'
+	}
+	else{
+		remLen.innerText = '(限50字以内，后期用于投票页面的简短介绍)!还能输入' + (maxLen - obj.value.length) + '字';//计算并显示剩余字数
+	}
+}//new function
+
+function checkMaxInput2(obj,maxLen,remLen) {
+	if (obj.value.length > maxLen){	//如果输入的字数超过了限制
+		obj.value = obj.value.substring(0, maxLen);	//就去掉多余的字
+		remLen.innerText = '您输入的内容超出了字数限制'
+	}
+	else{
+		remLen.innerText = '(限800字以内，可为所获荣誉、论文发表情况等，请列点说明)!还能输入' + (maxLen - obj.value.length) + '字';//计算并显示剩余字数
+	}
+}//new function
+
+function checkMaxInput3(obj,maxLen,remLen) {
+	if (obj.value.length > maxLen){	//如果输入的字数超过了限制
+		obj.value = obj.value.substring(0, maxLen);	//就去掉多余的字
+		remLen.innerText = '您输入的内容超出了字数限制'
+	}
+	else{
+		remLen.innerText = '(限1000字以内，可为个人情况详细介绍等)!还能输入' + (maxLen - obj.value.length) + '字';//计算并显示剩余字数
+	}
+}//new function
+var lastOpenedObj="test0";
+var lastOpenedParentObj="test0tab";
+var yuanxi=new Array();
+yuanxi["test0"]='建筑学院';
+yuanxi["test1"]='机械工程学院';
+yuanxi["test2"]='能源与环境学院';
+yuanxi["test3"]='信息科学与工程学院';
+yuanxi["test4"]='土木工程学院';
+yuanxi["test5"]='电子科学与工程学院';
+yuanxi["test6"]='数学系';
+yuanxi["test7"]='自动化学院';
+yuanxi["test8"]='计算机科学与工程学院';
+yuanxi["test9"]='物理系';
+yuanxi["test10"]='生物科学与医学工程学院';
+yuanxi["test11"]='材料科学与工程学院';
+yuanxi["test12"]='人文学院';
+yuanxi["test13"]='经济管理学院';
+yuanxi["test14"]='电气工程学院';	
+yuanxi["test15"]='外国语学院';
+yuanxi["test16"]='化学化工学院';
+yuanxi["test17"]='交通学院';
+yuanxi["test18"]='仪器科学与工程学院';
+yuanxi["test19"]='艺术学院';
+yuanxi["test20"]='法学院';
+yuanxi["test21"]='学习科学研究中心';
+yuanxi["test22"]='公共卫生学院';
+yuanxi["test23"]='医学院';
+yuanxi["test24"]='吴健雄学院';
+yuanxi["test25"]='软件学院';
+yuanxi["test26"]='无锡分校';
+
+function $G(Read_Id) { return document.getElementById(Read_Id) }
+function Effect(ObjectId,parentId){
+	var Obj_Display = $G(ObjectId).style.display;
+	if (Obj_Display == 'none'){
+	Start(ObjectId,'Opens');
+	xxx = yuanxi[ObjectId];
+	$G(parentId).innerHTML = "<a onClick=\"javascript:Effect('"+ObjectId+"','"+parentId+"');\" style='cursor:pointer;'>-</a>";
+	}else{
+		Start(ObjectId,'Close');
+		$G(parentId).innerHTML = "<a onClick=\"javascript:Effect('"+ObjectId+"','"+parentId+"');getNameList('"+xxx+"','list"+ObjectId+"');\" style='cursor:pointer;'>-</a>";
+	}
+}
+function Start(ObjId,method){
+	var BoxHeight = $G(ObjId).offsetHeight;   //获取对象高度
+	var MinHeight = 5;//定义对象最小高度
+	var MaxHeight = 130;//定义对象最大高度
+	var BoxAddMax = 1;//递增量初始值
+	var Every_Add = 0.15;//每次的递(减)增量  [数值越大速度越快]
+	var Reduce    = (BoxAddMax - Every_Add);
+	var Add       = (BoxAddMax + Every_Add);
+	//关闭动作**
+	if (method == "Close"){
+	var Alter_Close = function(){//构建一个虚拟的[递减]循环
+	BoxAddMax /= Reduce;
+	BoxHeight -= BoxAddMax;
+	if (BoxHeight <= MinHeight){
+	$G(ObjId).style.display = "none";
+	window.clearInterval(BoxAction);
+	}
+	else $G(ObjId).style.height = BoxHeight;
+	}
+	var BoxAction = window.setInterval(Alter_Close,1);
+	}
+	//打开动作*
+	else if (method == "Opens"){
+	var Alter_Opens = function(){
+	BoxAddMax *= Add;
+	BoxHeight += BoxAddMax;
+	if (BoxHeight >= MaxHeight){
+	$G(ObjId).style.height = MaxHeight;
+	window.clearInterval(BoxAction);
+	}else{
+	$G(ObjId).style.display= "block";
+	$G(ObjId).style.height = BoxHeight;
+	}
+	}
+	var BoxAction = window.setInterval(Alter_Opens,1);
+	Start(lastOpenedObj,"Close");
+	xxx = yuanxi[lastOpenedObj];
+	$G(lastOpenedParentObj).innerHTML="<a onClick=javascript:Effect(\""+lastOpenedObj+"\",\""+lastOpenedParentObj+"\");getNameList(\""+xxx+"\",list\""+lastOpenedObj+"\");\" style=\"cursor:pointer;\">+</a>";
+	$("#list"+lastOpenedObj).empty();
+	lastOpenedObj=ObjId;
+	lastOpenedParentObj=lastOpenedObj+"tab";
+	}
+}
+
+//下面为Ajax局部刷新获得候选人列表
+function getNameList(schoolname1,ulToAddId)
+{
+	var ajax = false;
+	//开始初始化XMLHttpRequest对象
+    if(window.XMLHttpRequest) 
+	{ 	//Mozilla 浏览器
+        ajax = new XMLHttpRequest();
+    	if (ajax.overrideMimeType) 
+		{	//设置MiME类别
+            ajax.overrideMimeType("text/xml");
+   		}
+ 	}
+    else if (window.ActiveXObject) 
+	{ 	// IE浏览器
+        try 
+		{
+        	ajax = new ActiveXObject("Msxml2.XMLHTTP");
+        } 
+		catch (e) 
+		{
+        	try 
+			{
+            	ajax = new ActiveXObject("Microsoft.XMLHTTP");
+            } 
+			catch (e) {}
+		}
+	}
+    if (!ajax) 
+	{ 	// 异常，创建对象实例失败
+        window.alert("不能创建XMLHttpRequest对象实例.");
+        return false;
+	} 
+
+	ajax.onreadystatechange=function()
+	{
+	  if (ajax.readyState==4 && ajax.status==200)
+	  {
+	  	textR1=ajax.responseText;//这里的responseText是Json
+	    addName(ulToAddId,textR1);//这个是正常使用的代码
+	  }
+	}
+
+	var json_schoolname = {'college':schoolname1};
+	
+	var postStr = "schoolname="+JSON.stringify(json_schoolname);
+	ajax.open("get","namelist.php?"+postStr,true);
+	ajax.send();
+}
+//下面为解析并用jQuery动态地添加某学院里所有候选人的名字
+function addName(ul_id,nameData)//ul_id 是将要动态添加进去名字的标签的id,nameData为json数据(String)。
+{
+	var nameObj = JSON.parse(nameData);
+	var nametotal = nameObj['total'];
+	for(var i=0; i<nametotal; i++){
+	//-------------这里不知是怎么处理的，会报错-----------------------------
+		var studentNum = nameObj['people'][i]['sId'];
+		 $('#'+ul_id).append("<li onClick=\"javascript:getDetail('"+studentNum+"')\" style=\"cursor:pointer;cursor:hand;\">"+nameObj['people'][i]['sId']+nameObj['people'][i]['sName']+"</li>");
+	}
+}
+//下面为获得某人的具体信息(传输过程)
+function getDetail(studentId1){
+	studentId1 = studentId1+"";
+	var xmlhttp;
+	if (window.XMLHttpRequest)
+  	{// code for IE7+, Firefox, Chrome, Opera, Safari
+	  xmlhttp=new XMLHttpRequest();
+	}
+	else
+	{// code for IE6, IE5
+	  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	}
+	xmlhttp.onreadystatechange=function()
+	{
+	  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+	  {
+	  	textR1=xmlhttp.responseText;//这里的responseText是Json
+	  	if(textR1 == -1){
+	  		alert("系统出错！");
+	  	}
+	  	else{
+	    	addDetail(textR1);//这个是正常使用的代码
+	    }
+	  }
+	}
+	var postStr = "flag=01"+"&studentId="+studentId1;
+	xmlhttp.open("get","namelistDet.php?"+postStr,true);
+	xmlhttp.send();
+}
+//获得某人信息的具体实现
+function addDetail(textD){
+	// window.alert("addDetail is done");//ceshi
+	// $G("number").value="00110011";//ceshi
+	// window.alert("done done");//ceshi
+	detailObj = JSON.parse(textD);
+	$G("realname").value=detailObj['realname'];//姓名
+	$G("number").value=detailObj['number'];//学号
+	$G("nation").value=detailObj['nation'];//名族
+	$G("tele").value=detailObj['tele'];//手机
+	$G("email").value=detailObj['email'];//电子邮件
+	$G("highschool").value=detailObj['highschool'];//毕业高中
+
+	$G(detailObj['sex']).checked='true';//性别
+	$G(detailObj['yesorno']).checked='true';//是否同意公开
+
+	$G("college").value=detailObj['college'];//院系
+	$G("politicallandscape").value=detailObj['politicallandscape'];//政治面貌
+	$G("type").value=detailObj['type'];//影响力类型
+
+	$G(detailObj['recommend']).checked='true';//推荐类型
+	if (detailObj['recommend'] == '院系推荐'){
+		document.all.checkJYM.disabled=true;document.all.checkJYM.value=detailObj['checkCode'];
+	}
+	else{
+		document.all.checkJYM.disabled=true;document.all.checkJYM.value='无需校验码';
+	}
+
+	var tempdes =detailObj['describe'];//个人影响力描述
+	tempdes = tempdes.replace(/`/g,"\n");
+	tempdes = tempdes.replace(/MicrosoftAA/g,"\"");
+	tempdes = tempdes.replace(/MicrosoftBB/g,"\'");
+	$G("describe").value = tempdes;
+
+	var tempdes1 =detailObj['material'];
+	tempdes1 = tempdes1.replace(/`/g,"\n");
+	tempdes1 = tempdes1.replace(/MicrosoftAA/g,"\"");
+	tempdes1 = tempdes1.replace(/MicrosoftBB/g,"\'");
+	$G("material").value = tempdes1;//影响力证明材料
+
+	var tempdes2 =detailObj['introduce'];
+	tempdes2 = tempdes2.replace(/`/g,"\n");
+	tempdes2 = tempdes2.replace(/MicrosoftAA/g,"\"");
+	tempdes2 = tempdes2.replace(/MicrosoftBB/g,"\'");
+	$G("introduce").value = tempdes2;//个人详细介绍
+
+	$G("preview").src = detailObj['identiPic'];
+	$G("preview1").src= detailObj['lifePic'];
+}
+function check_save(){
+	var studentNumber = $('#number').val();
+	var describe = $('#describe').val();
+	describe = describe.replace(/\n/g,"`");
+	describe = describe.replace(/\"/g,"MicrosoftAA");
+	describe = describe.replace(/\'/g,"MicrosoftBB");
+	var proof = $('#material').val();
+	proof = proof.replace(/\n/g,"`");
+	proof = proof.replace(/\"/g,"MicrosoftAA");
+	proof = proof.replace(/\'/g,"MicrosoftBB");
+	var introduce = $('#introduce').val();
+	introduce = introduce.replace(/\n/g,"`");
+	introduce = introduce.replace(/\"/g,"MicrosoftAA");
+	introduce = introduce.replace(/\'/g,"MicrosoftBB");
+	var xmlhttp;
+	if (window.XMLHttpRequest)
+  	{// code for IE7+, Firefox, Chrome, Opera, Safari
+	  xmlhttp=new XMLHttpRequest();
+	}
+	else
+	{// code for IE6, IE5
+	  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	}
+	xmlhttp.onreadystatechange=function()
+	{
+	  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+	  {
+	  	var ret=xmlhttp.responseText;//这里的responseText是Json
+	  	alert(ret);
+		}
+	}
+	var json_info = {
+			'studentNumber':studentNumber,
+			'describe':describe,'proof':proof,
+			'introduce':introduce
+		}
+	var postStr = JSON.stringify(json_info);
+	var newPostStr = "postStr=" + postStr; 
+	xmlhttp.open("post","admin.php",true);
+	xmlhttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded;charset=UTF-8");
+	xmlhttp.send(newPostStr);
+}
+</script>
+<style>
+	table{width:95%;overflow:hidden;}
+	#control,#control table,#control table td{ font-size:12px;}
+	#control{
+	width:95%;
+	background-color:#F0F8FF;
+	font-size:12px;
+	font-color:#333333;
+	text-align:center;
+	margin-bottom: 5px;
+	margin: 0 auto;
+	}
+	#control table{ width:95%; height:21px; overflow:hidden;margin: 0 auto}
+	#control table li{ list-style:none;height:20px;line-height:20px; overflow:hidden;}
+	#control table .tabTit{background:#E0E8B8;}
+	#control a { font-weight:normal; font-size:24px; color:#6F7848; text-decoration:none; padding-right:10px;}
+	#control .testLink{ font-weight:bold; font-size:12px; cursor:pointer;}
+	.test{ width:95%;background-color:#F0F8FF;overflow:auto; margin: 0 auto}
+	.test li{
+		list-style:none;
+		color:#000;
+		font-size:15px;
+		line-height:20px;
+		text-align: left;
+	}
+	#control table,.test table{ margin:0 auto; text-align:center;}
+	.STYLE1 {
+	font-size: 8px;
+	color: #fff;
+	}
+	body {background:#eff9f8;}
+
+
+textarea{
+	position: relative;
+	vertical-align:top;
+}
+
+.information{
+	margin: 20% auto 0;
+	height: 0px;
+	width: 20%;
+	display: inline;
+}
+
+.detailInfoL{
+	position: relative;
+	width: 60%;
+	height: 640px;
+	left: 0%;
+}
+
+.detailInfoR{
+	float: right;
+	width: 36%;
+	height: 640px;
+	left: 50%;
+	text-align: center;
+	box-shadow: 0 0 1px #011331;
+	border-radius: 5px;
+	padding: 10px;
+	overflow: hidden;
+}
+
+.picUpload{
+	height: 320px;
+	position: relative;
+}
+
+.bigContent{
+	position: relative;
+	background-color: #eff9f8;
+	width: 800px;
+	left: 50%;
+	margin-left: -400px;
+	box-shadow: 0 0 1px #011331;
+	border-radius: 5px;
+	padding: 10px;
+	overflow: hidden;
+}
+
+.describeAndOther{
+/*	background-color: #99CCFF;*/
+	position: relative;
+	width: 100%;
+	height: 800px;
+}
+.labelArea{
+	float: left;
+	position: relative;
+	width: 480px;
+	margin-right: 10px;
+	line-height: 42px;
+	font-size: 14px;
+	color: #666;
+	font-weight: bold;
+	text-align: center;
+	margin-top: 6px;
+}
+.labelArea0{
+	position: relative;
+	line-height: 42px;
+	left: 15px;
+	width: 800px;
+	font-size: 15px;
+	color: #666;
+	font-weight: bold;
+	margin-top: 6px;
+}
+.inputArea{
+	display: block;
+	position: relative;
+	float: right;
+	width: 340px;
+	height: 42px;
+	padding: 5px 5px 5px 5px;
+	margin-right: 10px;
+	border: 1px solid #ddd;
+	font-size: 14px;
+	color: #666;
+}
+.inputArea0{
+	position: relative;
+	width: 800px;
+	height: 75px;
+	font-size: 14px;
+	color: #666;
+}
+.inputArea1{
+	position: relative;
+	width: 800px;
+	height: 240px;
+	font-size: 14px;
+	color: #666;
+}
+.inputArea2{
+	position: relative;
+	width: 800px;
+	height: 260px;
+	font-size: 14px;
+	color:#666;
+}
+.radioArea0{
+	position: relative;
+	margin-right: 20px;
+	margin-top: 20px;
+	line-height: 42px;
+	font-size: 14px;
+	font-weight: bold;
+}
+.radioArea{
+	position: relative;
+	margin-right: 10px;
+	line-height: 42px;
+	font-size: 14px;
+}
+.tipInfo{
+	color: #202020;
+	width: 800px;
+	position: relative;
+	line-height: 15px;
+	font-size: 10px;
+}
+div#label {background-color: #F0F8FF;width: 20%;float: left;}
+div#content {background-color: #F0F8FF;width: 80%;float: right;}
+
+</style>
+
+<body style="overflow:scroll">
+<h1 align="center" style="color:#000033;">东南大学最具影响力毕业生</h1>
+<h2 align="center" style="color:#000033;">管理员系统</h1>
+<hr>
+<div id="label">
+	<h4 align="center" style="color:#000033;">最具影响力毕业生候选人名单</h4>
+	<!--第一个菜单-->
+	<div id="control">
+	<table width="100%"  border="0" cellpadding="0" cellspacing="0">
+	<tr>
+	<td width="100%" align="center" class="tabTit" ><li id="test0tab" style="float:right"><a onClick="Effect('test0',this.parentNode.id);getNameList('建筑学院','listtest0');" style="cursor:pointer;">+</a> </li><li style="float:left"><a onClick="Effect('test0','test0tab');getNameList('建筑学院','listtest0');" class="testLink">建筑学院&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a> </li></td>
+	</tr>
+	</table>
+	</div>
+	<div id="test0" class="test" style="display:none;">
+	<table width="100%"  border="0" cellpadding="4" cellspacing="0" bgcolor="#EEEEEE">
+	<tr>
+	<td colspan="3" align="center" valign="top"><ul id="listtest0"></ul></td>
+	</tr>
+	</table>
+	</div>
+	<!--第二个菜单-->
+	<div id="control">
+	<table width="100%"  border="0" cellpadding="0" cellspacing="0">
+	<tr>
+	<td width="100%" align="center" class="tabTit" ><li id="test1tab" style="float:right"><a onClick="Effect('test1',this.parentNode.id);getNameList('机械工程学院','listtest1');" style="cursor:pointer;">+</a> </li><li style="float:left"><a onClick="Effect('test1','test1tab');getNameList('机械工程学院','listtest1');" class="testLink">机械工程学院&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></li></td>
+	</tr>
+	</table>
+	</div>
+	<div id="test1" class="test" style="display:none;">
+	<table width="100%"  border="0" cellpadding="4" cellspacing="0" bgcolor="#EEEEEE">
+	<tr>
+	<td colspan="3" align="center" valign="top"><ul id="listtest1"></ul></td>
+	</tr>
+	</table>
+	</div>
+	<!--第三个菜单-->
+	<div id="control">
+	<table width="100%"  border="0" cellpadding="0" cellspacing="0">
+	<tr>
+	<td width="100%" align="center" class="tabTit" ><li id="test2tab" style="float:right"><a onClick="Effect('test2',this.parentNode.id);getNameList('能源与环境学院','listtest2');" style="cursor:pointer;">+</a> </li><li style="float:left"><a onClick="Effect('test2','test2tab');getNameList('能源与环境学院','listtest2');" class="testLink">能源与环境学院&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></li></td>
+	</tr>
+	</table>
+	</div>
+	<div id="test2" class="test" style="display:none;">
+	<table width="100%"  border="0" cellpadding="4" cellspacing="0" bgcolor="#EEEEEE">
+	<tr>
+	<td colspan="3" align="center" valign="top"><ul id="listtest2"></ul></td>
+	</tr>
+	</table>
+	</div>
+	<!--第四个菜单-->
+	<div id="control">
+	<table width="100%"  border="0" cellpadding="0" cellspacing="0">
+	<tr>
+	<td width="100%" align="center" class="tabTit" ><li id="test3tab" style="float:right"><a onClick="Effect('test3',this.parentNode.id);getNameList('信息科学与工程学院','listtest3');" style="cursor:pointer;">+</a> </li><li style="float:left"><a onClick="Effect('test3','test3tab');getNameList('信息科学与工程学院','listtest3');" class="testLink">信息科学与工程学院&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></li></td>
+	</tr>
+	</table>
+	</div>
+	<div id="test3" class="test" style="display:none;">
+	<table width="100%"  border="0" cellpadding="4" cellspacing="0" bgcolor="#EEEEEE">
+	<tr>
+	<td colspan="3" align="center" valign="top"><ul id="listtest3"></ul></td>
+	</tr>
+	</table>
+	</div>
+	<!--第五个菜单-->
+	<div id="control">
+	<table width="100%"  border="0" cellpadding="0" cellspacing="0">
+	<tr>
+	<td width="100%" align="center" class="tabTit" ><li id="test4tab" style="float:right"><a onClick="Effect('test4',this.parentNode.id);getNameList('土木工程学院','listtest4');"style="cursor:pointer;" >+</a> </li><li style="float:left"><a onClick="Effect('test4','test4tab');getNameList('土木工程学院','listtest4');" class="testLink">土木工程学院&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></li></td>
+	</tr>
+	</table>
+	</div>
+	<div id="test4" class="test" style="display:none;">
+	<table width="100%"  border="0" cellpadding="4" cellspacing="0" bgcolor="#EEEEEE">
+	<tr>
+	<td colspan="3" align="center" valign="top"><ul id="listtest4"></ul></td>
+	</tr>
+	</table>
+	</div>
+	<!--第六个菜单-->
+	<div id="control">
+	<table width="100%"  border="0" cellpadding="0" cellspacing="0">
+	<tr>
+	<td width="100%" align="center" class="tabTit" ><li id="test5tab" style="float:right"><a onClick="Effect('test5',this.parentNode.id);getNameList('电子科学与工程学院','listtest5');"style="cursor:pointer;" >+</a> </li><li style="float:left"><a onClick="Effect('test5','test5tab');getNameList('电子科学与工程学院','listtest5');" class="testLink">电子科学与工程学院&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></li></td>
+	</tr>
+	</table>
+	</div>
+	<div id="test5" class="test" style="display:none;">
+	<table width="100%"  border="0" cellpadding="4" cellspacing="0" bgcolor="#EEEEEE">
+	<tr>
+	<td colspan="3" align="center" valign="top"><ul id="listtest5"></ul></td>
+	</tr>
+	</table>
+	</div>
+	<!--第七个菜单-->
+	<div id="control">
+	<table width="100%"  border="0" cellpadding="0" cellspacing="0">
+	<tr>
+	<td width="100%" align="center" class="tabTit" ><li id="test6tab" style="float:right"><a onClick="Effect('test6',this.parentNode.id);getNameList('数学系','listtest6');"style="cursor:pointer;" >+</a> </li><li style="float:left"><a onClick="Effect('test6','test6tab');getNameList('数学系','listtest6');" class="testLink">数学系&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></li></td>
+	</tr>
+	</table>
+	</div>
+	<div id="test6" class="test" style="display:none;">
+	<table width="100%"  border="0" cellpadding="4" cellspacing="0" bgcolor="#EEEEEE">
+	<tr>
+	<td colspan="3" align="center" valign="top"><ul id="listtest6"></ul></td>
+	</tr>
+	</table>
+	</div>
+	<!--第八个菜单-->
+	<div id="control">
+	<table width="100%"  border="0" cellpadding="0" cellspacing="0">
+	<tr>
+	<td width="100%" align="center" class="tabTit" ><li id="test7tab" style="float:right"><a onClick="Effect('test7',this.parentNode.id);getNameList('自动化学院','listtest7');" style="cursor:pointer;">+</a> </li><li style="float:left"><a onClick="Effect('test7','test7tab');getNameList('自动化学院','listtest7');" class="testLink">自动化学院&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></li></td>
+	</tr>
+	</table>
+	</div>
+	<div id="test7" class="test" style="display:none;">
+	<table width="100%"  border="0" cellpadding="4" cellspacing="0" bgcolor="#EEEEEE">
+	<tr>
+	<td colspan="3" align="center" valign="top"><ul id="listtest7"></ul></td>
+	</tr>
+	</table>
+	</div>
+	<!--第九个菜单-->
+	<div id="control">
+	<table width="100%"  border="0" cellpadding="0" cellspacing="0">
+	<tr>
+	<td width="100%" align="center" class="tabTit" ><li id="test8tab" style="float:right"><a onClick="Effect('test8',this.parentNode.id);getNameList('计算机学院','listtest8');"style="cursor:pointer;" >+</a> </li><li style="float:left"><a onClick="Effect('test8','test8tab');getNameList('计算机学院','listtest8');" class="testLink">计算机学院&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></li></td>
+	</tr>
+	</table>
+	</div>
+	<div id="test8" class="test" style="display:none;">
+	<table width="100%"  border="0" cellpadding="4" cellspacing="0" bgcolor="#EEEEEE">
+	<tr>
+	<td colspan="3" align="center" valign="top"><ul id="listtest8"></ul></td>
+	</tr>
+	</table>
+	</div>
+	<!--第十个菜单-->
+	<div id="control">
+	<table width="100%"  border="0" cellpadding="0" cellspacing="0">
+	<tr>
+	<td width="100%" align="center" class="tabTit" ><li id="test9tab" style="float:right"><a onClick="Effect('test9',this.parentNode.id);getNameList('物理系','listtest9');"style="cursor:pointer;" >+</a> </li><li style="float:left"><a onClick="Effect('test9','test9tab');getNameList('物理系','listtest9');" class="testLink">物理系&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></li></td>
+	</tr>
+	</table>
+	</div>
+	<div id="test9" class="test" style="display:none;">
+	<table width="100%"  border="0" cellpadding="4" cellspacing="0" bgcolor="#EEEEEE">
+	<tr>
+	<td colspan="3" align="center" valign="top"><ul id="listtest9"></ul></td>
+	</tr>
+	</table>
+	</div>
+	<!--第十一个菜单-->
+	<div id="control">
+	<table width="100%"  border="0" cellpadding="0" cellspacing="0">
+	<tr>
+	<td width="100%" align="center" class="tabTit" ><li id="test10tab" style="float:right"><a onClick="Effect('test10',this.parentNode.id);getNameList('生物科学与医学工程学院','listtest10');" style="cursor:pointer;">+</a> </li><li style="float:left"><a onClick="Effect('test10','test10tab');getNameList('生物科学与医学工程学院','listtest10');" class="testLink">生物科学与医学工程学院&nbsp;&nbsp;</a></li></td>
+	</tr>
+	</table>
+	</div>
+	<div id="test10" class="test" style="display:none;">
+	<table width="100%"  border="0" cellpadding="4" cellspacing="0" bgcolor="#EEEEEE">
+	<tr>
+	<td colspan="3" align="center" valign="top"><ul id="listtest10"></ul></td>
+	</tr>
+	</table>
+	</div>
+	<!--第十二个菜单-->
+	<div id="control">
+	<table width="100%"  border="0" cellpadding="0" cellspacing="0">
+	<tr>
+	<td width="100%" align="center" class="tabTit" ><li id="test11tab" style="float:right"><a onClick="Effect('test11',this.parentNode.id);getNameList('材料科学与工程学院','listtest11');" style="cursor:pointer;">+</a> </li><li style="float:left"><a onClick="Effect('test11','test11tab');getNameList('材料科学与工程学院','listtest11');" class="testLink">材料科学与工程学院&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></li></td>
+	</tr>
+	</table>
+	</div>
+	<div id="test11" class="test" style="display:none;">
+	<table width="100%"  border="0" cellpadding="4" cellspacing="0" bgcolor="#EEEEEE">
+	<tr>
+	<td colspan="3" align="center" valign="top"><ul id="listtest11"></ul></td>
+	</tr>
+	</table>
+	</div>
+	<!--第十三个菜单-->
+	<div id="control">
+	<table width="100%"  border="0" cellpadding="0" cellspacing="0">
+	<tr>
+	<td width="100%" align="center" class="tabTit" ><li id="test12tab" style="float:right"><a onClick="Effect('test12',this.parentNode.id);getNameList('人文学院','listtest12');" style="cursor:pointer;">+</a> </li><li style="float:left"><a onClick="Effect('test12','test12tab');getNameList('人文学院','listtest12');" class="testLink">人文学院&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></li></td>
+	</tr>
+	</table>
+	</div>
+	<div id="test12" class="test" style="display:none;">
+	<table width="100%"  border="0" cellpadding="4" cellspacing="0" bgcolor="#EEEEEE">
+	<tr>
+	<td colspan="3" align="center" valign="top"><ul id="listtest12"></ul></td>
+	</tr>
+	</table>
+	</div>
+	<!--第十四个菜单-->
+	<div id="control">
+	<table width="100%"  border="0" cellpadding="0" cellspacing="0">
+	<tr>
+	<td width="100%" align="center" class="tabTit" ><li id="test13tab" style="float:right"><a onClick="Effect('test13',this.parentNode.id);getNameList('经济管理学院','listtest13');" style="cursor:pointer;">+</a> </li><li style="float:left"><a onClick="Effect('test13','test13tab');getNameList('经济管理学院','listtest13');" class="testLink">经济管理学院&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></li></td>
+	</tr>
+	</table>
+	</div>
+	<div id="test13" class="test" style="display:none;">
+	<table width="100%"  border="0" cellpadding="4" cellspacing="0" bgcolor="#EEEEEE">
+	<tr>
+	<td colspan="3" align="center" valign="top"><ul id="listtest13"></ul></td>
+	</tr>
+	</table>
+	</div>
+	<!--第十五个菜单-->
+	<div id="control">
+	<table width="100%"  border="0" cellpadding="0" cellspacing="0">
+	<tr>
+	<td width="100%" align="center" class="tabTit" ><li id="test14tab" style="float:right"><a onClick="Effect('test14',this.parentNode.id);getNameList('电气工程学院','listtest14');" style="cursor:pointer;">+</a> </li><li style="float:left"><a onClick="Effect('test14','test14tab');getNameList('电气工程学院','listtest14');" class="testLink">电气工程学院&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></li></td>
+	</tr>
+	</table>
+	</div>
+	<div id="test14" class="test" style="display:none;">
+	<table width="100%"  border="0" cellpadding="4" cellspacing="0" bgcolor="#EEEEEE">
+	<tr>
+	<td colspan="3" align="center" valign="top"><ul id="listtest14"></ul></td>
+	</tr>
+	</table>
+	</div>
+	<!--第十六个菜单-->
+	<div id="control">
+	<table width="100%"  border="0" cellpadding="0" cellspacing="0">
+	<tr>
+	<td width="100%" align="center" class="tabTit" ><li id="test15tab" style="float:right"><a onClick="Effect('test15',this.parentNode.id);getNameList('外国语学院','listtest15');" style="cursor:pointer;">+</a> </li><li style="float:left"><a onClick="Effect('test15','test15tab');getNameList('外国语学院','listtest15');" class="testLink">外国语学院&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></li></td>
+	</tr>
+	</table>
+	</div>
+	<div id="test15" class="test" style="display:none;">
+	<table width="100%"  border="0" cellpadding="4" cellspacing="0" bgcolor="#EEEEEE">
+	<tr>
+	<td colspan="3" align="center" valign="top"><ul id="listtest15"></ul></td>
+	</tr>
+	</table>
+	</div>
+	<!--第十七个菜单-->
+	<div id="control">
+	<table width="100%"  border="0" cellpadding="0" cellspacing="0">
+	<tr>
+	<td width="100%" align="center" class="tabTit" ><li id="test16tab" style="float:right"><a onClick="Effect('test16',this.parentNode.id);getNameList('化学化工学院','listtest16');" style="cursor:pointer;">+</a> </li><li style="float:left"><a onClick="Effect('test16','test16tab');getNameList('化学化工学院','listtest16');" class="testLink">化学化工学院&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></li></td>
+	</tr>
+	</table>
+	</div>
+	<div id="test16" class="test" style="display:none;">
+	<table width="100%"  border="0" cellpadding="4" cellspacing="0" bgcolor="#EEEEEE">
+	<tr>
+	<td colspan="3" align="center" valign="top"><ul id="listtest16"></ul></td>
+	</tr>
+	</table>
+	</div>
+	<!--第十八个菜单-->
+	<div id="control">
+	<table width="100%"  border="0" cellpadding="0" cellspacing="0">
+	<tr>
+	<td width="100%" align="center" class="tabTit" ><li id="test17tab" style="float:right"><a onClick="Effect('test17',this.parentNode.id);getNameList('交通学院','listtest17');" style="cursor:pointer;">+</a> </li><li style="float:left"><a onClick="Effect('test17','test17tab');getNameList('交通学院','listtest17');" class="testLink">交通学院&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></li></td>
+	</tr>
+	</table>
+	</div>
+	<div id="test17" class="test" style="display:none;">
+	<table width="100%"  border="0" cellpadding="4" cellspacing="0" bgcolor="#EEEEEE">
+	<tr>
+	<td colspan="3" align="center" valign="top"><ul id="listtest17"></ul></td>
+	</tr>
+	</table>
+	</div>
+	<!--第十九个菜单-->
+	<div id="control">
+	<table width="100%"  border="0" cellpadding="0" cellspacing="0">
+	<tr>
+	<td width="100%" align="center" class="tabTit" ><li id="test18tab" style="float:right"><a onClick="Effect('test18',this.parentNode.id);getNameList('仪器科学与工程学院','listtest18');" style="cursor:pointer;">+</a> </li><li style="float:left"><a onClick="Effect('test18','test18tab');getNameList('仪器科学与工程学院','listtest18');" class="testLink">仪器科学与工程学院&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></li></td>
+	</tr>
+	</table>
+	</div>
+	<div id="test18" class="test" style="display:none;">
+	<table width="100%"  border="0" cellpadding="4" cellspacing="0" bgcolor="#EEEEEE">
+	<tr>
+	<td colspan="3" align="center" valign="top"><ul id="listtest18"></ul></td>
+	</tr>
+	</table>
+	</div>
+	<!--第二十个菜单-->
+	<div id="control">
+	<table width="100%"  border="0" cellpadding="0" cellspacing="0">
+	<tr>
+	<td width="100%" align="center" class="tabTit" ><li id="test19tab" style="float:right"><a onClick="Effect('test19',this.parentNode.id);getNameList('艺术学院','listtest19');" style="cursor:pointer;">+</a> </li><li style="float:left"><a onClick="Effect('test19','test19tab');getNameList('艺术学院','listtest19');" class="testLink">艺术学院&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></li></td>
+	</tr>
+	</table>
+	</div>
+	<div id="test19" class="test" style="display:none;">
+	<table width="100%"  border="0" cellpadding="4" cellspacing="0" bgcolor="#EEEEEE">
+	<tr>
+	<td colspan="3" align="center" valign="top"><ul id="listtest19"></ul></td>
+	</tr>
+	</table>
+	</div>
+	<!--第二十一个菜单-->
+	<div id="control">
+	<table width="100%"  border="0" cellpadding="0" cellspacing="0">
+	<tr>
+	<td width="100%" align="center" class="tabTit" ><li id="test20tab" style="float:right"><a onClick="Effect('test20',this.parentNode.id);getNameList('法学院','listtest20');" style="cursor:pointer;">+</a> </li><li style="float:left"><a onClick="Effect('test20','test20tab');getNameList('法学院','listtest20');" class="testLink">法学院&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></li></td>
+	</tr>
+	</table>
+	</div>
+	<div id="test20" class="test" style="display:none;">
+	<table width="100%"  border="0" cellpadding="4" cellspacing="0" bgcolor="#EEEEEE">
+	<tr>
+	<td colspan="3" align="center" valign="top"><ul id="listtest20"></ul></td>
+	</tr>
+	</table>
+	</div>
+	<!--第二十二个菜单-->
+	<div id="control">
+	<table width="100%"  border="0" cellpadding="0" cellspacing="0">
+	<tr>
+	<td width="100%" align="center" class="tabTit" ><li id="test21tab" style="float:right"><a onClick="Effect('test21',this.parentNode.id);getNameList('学习科学研究中心','listtest21');" style="cursor:pointer;">+</a> </li><li style="float:left"><a onClick="Effect('test21','test21tab');getNameList('学习科学研究中心','listtest21');" class="testLink">学习科学研究中心&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></li></td>
+	</tr>
+	</table>
+	</div>
+	<div id="test21" class="test" style="display:none;">
+	<table width="100%"  border="0" cellpadding="4" cellspacing="0" bgcolor="#EEEEEE">
+	<tr>
+	<td colspan="3" align="center" valign="top"><ul id="listtest21"></ul></td>
+	</tr>
+	</table>
+	</div>
+	<!--第二十三个菜单-->
+	<div id="control">
+	<table width="100%"  border="0" cellpadding="0" cellspacing="0">
+	<tr>
+	<td width="100%" align="center" class="tabTit" ><li id="test22tab" style="float:right"><a onClick="Effect('test22',this.parentNode.id);getNameList('公共卫生学院','listtest22');" style="cursor:pointer;">+</a> </li><li style="float:left"><a onClick="Effect('test22','test22tab');getNameList('公共卫生学院','listtest22');" class="testLink">公共卫生学院&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></li></td>
+	</tr>
+	</table>
+	</div>
+	<div id="test22" class="test" style="display:none;">
+	<table width="100%"  border="0" cellpadding="4" cellspacing="0" bgcolor="#EEEEEE">
+	<tr>
+	<td colspan="3" align="center" valign="top"><ul id="listtest22"></ul></td>
+	</tr>
+	</table>
+	</div>
+	<!--第二十四个菜单-->
+	<div id="control">
+	<table width="100%"  border="0" cellpadding="0" cellspacing="0">
+	<tr>
+	<td width="100%" align="center" class="tabTit" ><li id="test23tab" style="float:right"><a onClick="Effect('test23',this.parentNode.id);getNameList('医学院','listtest23');"style="cursor:pointer;">+</a> </li><li style="float:left"><a onClick="Effect('test23','test23tab');getNameList('医学院','listtest23');" class="testLink">医学院&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></li></td>
+	</tr>
+	</table>
+	</div>
+	<div id="test23" class="test" style="display:none;">
+	<table width="100%"  border="0" cellpadding="4" cellspacing="0" bgcolor="#EEEEEE">
+	<tr>
+	<td colspan="3" align="center" valign="top"><ul id="listtest23"></ul></td>
+	</tr>
+	</table>
+	</div>
+	<!--第二十五个菜单-->
+	<div id="control">
+	<table width="100%"  border="0" cellpadding="0" cellspacing="0">
+	<tr>
+	<td width="100%" align="center" class="tabTit" ><li id="test24tab" style="float:right"><a onClick="Effect('test24',this.parentNode.id);getNameList('吴健雄学院','listtest24');" style="cursor:pointer;">+</a> </li><li style="float:left"><a onClick="Effect('test24','test24tab');getNameList('吴健雄学院','listtest24');" class="testLink">吴健雄学院&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></li></td>
+	</tr>
+	</table>
+	</div>
+	<div id="test24" class="test" style="display:none;">
+	<table width="100%"  border="0" cellpadding="4" cellspacing="0" bgcolor="#EEEEEE">
+	<tr>
+	<td colspan="3" align="center" valign="top"><ul id="listtest24"></ul></td>
+	</tr>
+	</table>
+	</div>
+	<!--第二十六个菜单-->
+	<div id="control">
+	<table width="100%"  border="0" cellpadding="0" cellspacing="0">
+	<tr>
+	<td width="100%" align="center" class="tabTit" ><li id="test25tab" style="float:right"><a onClick="Effect('test25',this.parentNode.id);getNameList('软件学院','listtest25');" style="cursor:pointer;">+</a> </li><li style="float:left"><a onClick="Effect('test25','test25tab');getNameList('软件学院','listtest25');" class="testLink">软件学院&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></li></td>
+	</tr>
+	</table>
+	</div>
+	<div id="test25" class="test" style="display:none;">
+	<table width="100%"  border="0" cellpadding="4" cellspacing="0" bgcolor="#EEEEEE">
+	<tr>
+	<td colspan="3" align="center" valign="top"><ul id="listtest25"></ul></td>
+	</tr>
+	</table>
+	</div>
+	<!--第二十七个菜单-->
+	<div id="control">
+	<table width="100%"  border="0" cellpadding="0" cellspacing="0">
+	<tr>
+	<td width="100%" align="center" class="tabTit" ><li id="test26tab" style="float:right"><a onClick="Effect('test26',this.parentNode.id);getNameList('无锡分校','listtest26');" style="cursor:pointer;">+</a> </li><li style="float:left"><a onClick="Effect('test26','test26tab');getNameList('无锡分校','listtest26');" class="testLink">无锡分校&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></li></td>
+	</tr>
+	</table>
+	</div>
+	<div id="test26" class="test" style="display:none;">
+	<table width="100%"  border="0" cellpadding="4" cellspacing="0" bgcolor="#EEEEEE">
+	<tr>
+	<td colspan="3" align="center" valign="top"><ul id="listtest26"></ul></td>
+	</tr>
+	</table>
+	</div>
+</div>
+
+
+<div id="content"><!--下面为个人信息界面-->
+	<div class="bigContent">
+		<div style="color:#000033">
+			<h3 align="center">个人信息</h2>
+			<hr />
+		</div>
+
+		<div class="detailInfoR">
+			<div class="picUpload">
+				<p style="font-size: 14px;color: #666;	font-weight: bold;">此处为该生证件照</p>
+				<div name = "preview" style="position:relative;left:75px;width:160px;">
+					<div id="localImag" style="height:195px;"><img id="preview" style="width:158px;height:195px;position:relative;diplay:none" src=""/></div>
+				
+				</div>
+			</div>
+			<hr>
+			<div class="picUpload">
+				<p style="font-size: 14px;color: #666;	font-weight: bold;">此处为该生生活照</p>
+				<div name = "preview1" style="position:relative;left:75px;width:160px;">
+					<div id="localImag1" style="height:195px;"><img id="preview1" style="width:158px;height:195px;position:relative;diplay:none" src=""/></div>
+				</div>
+			</div>
+		</div>
+
+		<div class="detailInfoL">
+			<div id = "information" class = "information">
+				<form>
+					<label class="labelArea">姓&nbsp;&nbsp;名&nbsp;&nbsp;:<input type = "text" id = "realname" class="inputArea" disabled></label>
+				</form>
+
+				<form>
+					<label class="labelArea" style="width:130px;">性　别&nbsp;&nbsp;:</label>
+						<input type = "radio" name = "sex" value = "male" class="radioArea0"  checked="" id="male"><label label style="font-size: 14px;
+						font-weight: bold;color:#666;" >男</label>　　　　
+						<input type = "radio" name = "sex" value = "female" class='radioArea0' checked="" id="female"><label label style="	font-size: 14px;
+						font-weight: bold;color:#666;" >女</label>				
+				</form>
+
+				<form>
+					<label class="labelArea">政治面貌:&nbsp;
+					<select id = "politicallandscape" class="inputArea" style="width:340px;height:42px;" disabled>
+						<option value = "moren">----请选择政治面貌----</option>
+						<option>群众</option>
+						<option>团员</option>
+						<option>中共党员</option>
+						<option>中共预备党员</option>
+					</select>
+					</label>
+				</form>
+
+				<form>
+					<label class="labelArea">学&nbsp;&nbsp;号&nbsp;&nbsp;:<input type = "text" id = "number" class="inputArea" disabled></label>
+				</form>
+
+				<form>
+					<label class="labelArea">民&nbsp;&nbsp;族&nbsp;&nbsp;:<input type = "text" id = "nation" class="inputArea" disabled></label>
+				</form>
+
+				<form>
+					<label class="labelArea">手&nbsp;&nbsp;机&nbsp;&nbsp;:<input type = "text" id = "tele" class="inputArea" disabled></label>
+				</form>
+
+				<form>
+					<label class="labelArea">院&nbsp;&nbsp;系&nbsp;&nbsp;:
+						<select id = "college" class="inputArea" style="	width: 340px;height:42px;" disabled>
+							<option value = "moren" selected>----请选择院系----</option>
+						    <option>建筑学院</option>
+						    <option>机械工程学院</option>
+						    <option>能源与环境学院</option>
+						    <option>信息科学与工程学院</option>
+						    <option>土木工程学院</option>
+						    <option>电子科学与工程学院</option>
+						    <option>数学系</option>
+							<option>自动化学院</option>
+							<option>计算机科学与工程学院</option>
+							<option>物理系</option>
+							<option>生物科学与医学工程学院</option>
+							<option>材料科学与工程学院</option>
+							<option>人文学院</option>
+							<option>经济管理学院</option>
+							<option>电气工程学院</option>
+							<option>外国语学院</option>
+							<option>化学化工学院</option>
+							<option>交通学院</option>
+							<option>仪器科学与工程学院</option>	
+							<option>艺术学院</option>
+							<option>法学院</option>
+							<option>学习科学研究中心</option>
+							<option>公共卫生学院</option>
+							<option>医学院</option>
+							<option>吴健雄学院</option>
+							<option>软件学院</option>
+							<option>无锡分校</option> 
+					    </select>
+					    </label>
+				</form>
+				
+				<form>
+					<label class="labelArea">电子邮箱:<input type = "text" id = "email" class="inputArea" disabled></label>
+				</form>
+
+				<form>
+					<label class="labelArea">毕业高中:<input type = "text" id = "highschool" class="inputArea" disabled></label>
+				</form>
+
+				<form>
+					<label class="labelArea" style="font-size:12px;	line-height: 42px; width:280px;">是否同意在人人网、新浪微博等公开个人信息</label>
+					<input type = "radio" name = "judge" value = "同意" class="radioArea0" disabled checked="" id="同意"><label style="	font-size: 14px;
+						font-weight: bold;color:#666;">同意&nbsp;</label>
+					<input type = "radio" name = "judge" value = "不同意" class="radioArea0" disabled id="不同意"><label style="	font-size: 14px;
+						font-weight: bold;color:#666;">不同意</label>
+				</form>
+
+		        <form>
+		        	<label class="labelArea">影响力类型:
+		        	<select id = "type" class="inputArea" style="	width: 340px;height:42px;" disabled>
+		        		<option value = "moren">----请选择影响力类型----</option>
+		        		<option>学术影响力</option>
+		        	    <option>创业影响力</option>
+		        	    <option>道德影响力</option>
+		        	    <option>公益影响力</option>
+		        	    <option>自强影响力</option>
+		        	    <option>正义影响力</option>
+		        	    <option>领袖影响力</option>
+		        	    <option>文体影响力</option>
+		        	    <option>其他</option>
+		        	</select>
+		        	</label>
+		   	    </form>
+
+		   	    <form>
+		   	    	<label class="labelArea"  style="width:130px;">推荐类型:</label>
+		   	    	<div>
+		   	    	<input type = "radio" name = "recommend" id="院系推荐" class="radioArea0" disabled checked=""><label style="font-size: 14px;font-weight: bold;color:#666;">院系推荐&nbsp;</label>
+
+		   	    	<input type = "radio" name = "recommend" id = "自我推荐" class = "radioArea1" disabled ><label style="font-size: 14px;font-weight: bold;color:#666;">自我推荐&nbsp;</label>
+
+		   	    	<input type = "text" name = "checkJYM" class = "inputArea" ></input>
+					</div>
+
+		   	    </form>    	
+
+	        </div>
+    	</div>
+
+    	<div name = "message" class="describeAndOther">
+	    	<br/>
+	    	<div style="height:140px;">
+				<label class="labelArea0">个人影响力描述:</label>
+				<div class="inputArea0">
+				<textarea id = "describe" rows = "4" cols = "65" onkeyup = "javascript:chkmaxsms(this,'50');checkMaxInput1(this,50,remLen1);" style="margin-left:125px;"></textarea>
+				</div>
+
+			 	<div class="tipInfo">
+			 	<tr>
+					<td><a id="remLen1" style = "font-size:10px ; position:relative ; float:right;margin-right:200px;">(限50字以内，后期用于投票页面的简短介绍)!还能输入50字</a></td>
+				</tr>
+				</div>
+			</div>
+
+		    <div style="height:310px;">
+				<label class="labelArea0">影响力证明材料:</label>
+				<div class="inputArea1">
+				<textarea id = "material" rows = "15" cols = "65" onkeyup = "javascript:chkmaxsms(this,'800');checkMaxInput2(this,800,remLen2);" style="margin-left:125px;"></textarea>
+				</div>
+				<div class="tipInfo">
+				<tr>
+					<td><p id="remLen2" style = "font-size:10px ; position:relative ; float:right;margin-right:200px;">(限800字以内，可为所获荣誉、论文发表情况等，请列点说明)!还能输入800字</p></td>
+				</tr>
+				<br/>
+				</div>
+		    </div>
+
+		    <div style="height:310px;">
+	    		<label class="labelArea0">个人详细介绍:</label>
+	    		<div class="inputArea1">
+	    		<textarea id = "introduce" rows = "15" cols = "65" onkeyup = "javascript:chkmaxsms(this,'1000');checkMaxInput3(this,1000,remLen3);" style = "margin-left:125px;"></textarea>
+	    		</div>
+
+	    		<div class="tipInfo">
+	    			<tr>
+	    				<td><p id="remLen3" style = "font-size:10px ; position:relative ; float:right;margin-right:200px;">(限1000字以内，可为个人情况详细介绍等)!还能输入1000字</p></td>
+	    			</tr>
+	    			<br/>
+	    		</div>
+    		</div>
+    	</div>
+
+    	<div style = "clear:both;position:relative;margin-left:40%;margin-top:5%;">
+	    	<form action = "" netgid = "post">
+	    	<input type = "button" class="button glow button-rounded button-flat" value = "确认修改并提交" onclick = "check_save();">
+	        </form>
+    	</div>
+
+	</div>
+	<br/>
+<hr>
+    <div style="font-family:'黑体';font-size:15px;color:gray;text-align: center;">东南大学学生处 | 东南大学教育基金会 | 能源与环境学院 | 计算机科学与工程学院、软件学院</div>
+    <div style="font-family:'黑体';font-size:14px;color:gray;text-align: center;">Copyright @ 软件学院 I++ Club</div>
+</div>
+
+</body>
+</html>
